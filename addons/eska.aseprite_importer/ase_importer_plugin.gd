@@ -106,7 +106,25 @@ func get_import_options(preset):
 		},
 		{
 			name = "billboard",
-			default_value = false if preset < Presets.PRESET_3D_BILLBOARD else true
+			default_value = SpatialMaterial.BILLBOARD_DISABLED if preset < Presets.PRESET_3D_BILLBOARD else SpatialMaterial.BILLBOARD_ENABLED,
+			property_hint = PROPERTY_HINT_ENUM,
+			hint_string = "Disabled,Enabled,Fixed Y,Particles"
+		},
+		{
+			name = "pixel_size",
+			default_value = 0.01
+		},
+		{
+			name = "origin_x",
+			default_value = 0.5,
+			property_hint = PROPERTY_HINT_RANGE,
+			hint_string = "0.0,1.0"
+		},
+		{
+			name = "origin_y",
+			default_value = 0.5 if preset != Presets.PRESET_3D_BILLBOARD else 0.0,
+			property_hint = PROPERTY_HINT_RANGE,
+			hint_string = "0.0,1.0"
 		}
 	]
 	
@@ -153,10 +171,11 @@ func import(src, target_path, import_options, r_platform_variants, r_gen_files):
 		print( ERRMSG_FILE_INVALID_STRF % [texture_path, "texture"] )
 		return ERR_INVALID_DATA
 	
-	var packed_scene = PackedScene.new()
+	var name = json_path.get_file().get_basename()
 	
+	var packed_scene = PackedScene.new()
 	var sheet2scene = SheetToScene.new(import_options)
-	error = sheet2scene.merge( sheet, texture, packed_scene, post_script_path, autoplay_name )
+	error = sheet2scene.merge( name, sheet, texture, packed_scene, post_script_path, autoplay_name )
 	if error != OK:
 		print( str( ERRMSG_MERGE_PRETEXT_STRF % target_path, sheet2scene.get_error_message(), ERRMSG_POSTCODE_STRF % error ))
 		return error
