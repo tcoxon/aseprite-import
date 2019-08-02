@@ -87,10 +87,7 @@ func merge( name, sheet, texture, packed_scene, post_script_path, autoplay_name,
 	sprite.set_offset(Vector2(- import_options.origin_x * frame_rect.size.x, - import_options.origin_y * frame_rect.size.y))
 	
 	if import_options.as_3d:
-		var material = SpatialMaterial.new()
-		material.flags_transparent = true
-		material.params_billboard_mode = import_options.billboard
-		(sprite as Sprite3D).material_override = material
+		(sprite as Sprite3D).material_override = import_options.material_override
 	
 	var error
 	if sheet.is_animations_enabled():
