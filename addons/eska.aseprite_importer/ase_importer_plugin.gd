@@ -49,6 +49,8 @@ Enable "Meta: Frame Tags" in Aseprite's "Export Sprite Sheet" dialog to export f
 
 const PLUGIN_NAME = "eska.aseprite_importer"
 
+enum Presets { PRESET_2D, PRESET_3D, PRESET_3D_BILLBOARD }
+
 func get_importer_name():
 	return PLUGIN_NAME
 
@@ -68,10 +70,14 @@ func get_option_visibility(option, options):
 	return true
 
 func get_preset_count():
-	return 1
+	return Presets.size()
 
 func get_preset_name(preset):
-	return "Default"
+	match preset:
+		Presets.PRESET_2D: return "2D"
+		Presets.PRESET_3D: return "3D"
+		Presets.PRESET_3D_BILLBOARD: return "3D Billboard"
+		_: return "Unknown"
 
 func get_import_options(preset):
 	var options =  [
@@ -94,6 +100,14 @@ func get_import_options(preset):
 			default_value = "",
 			#tooltip = "The name of the animation to autoplay on scene load.",
 		},
+		{
+			name = "as_3d",
+			default_value = false if preset < Presets.PRESET_3D else true
+		},
+		{
+			name = "billboard",
+			default_value = false if preset < Presets.PRESET_3D_BILLBOARD else true
+		}
 	]
 	
 	return options
@@ -139,16 +153,9 @@ func import(src, target_path, import_options, r_platform_variants, r_gen_files):
 		print( ERRMSG_FILE_INVALID_STRF % [texture_path, "texture"] )
 		return ERR_INVALID_DATA
 	
-	## This code is only useful if someone wishes to manually edit the .scn file in the .import directory, which is not recommended.
-#	var scene
-#
-#	if file.file_exists( target_path ):
-#		scene = load( target_path )
-#		assert( scene is PackedScene )
-#	else:
 	var packed_scene = PackedScene.new()
 	
-	var sheet2scene = SheetToScene.new()
+	var sheet2scene = SheetToScene.new(import_options)
 	error = sheet2scene.merge( sheet, texture, packed_scene, post_script_path, autoplay_name )
 	if error != OK:
 		print( str( ERRMSG_MERGE_PRETEXT_STRF % target_path, sheet2scene.get_error_message(), ERRMSG_POSTCODE_STRF % error ))
