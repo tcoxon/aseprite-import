@@ -79,6 +79,15 @@ func get_preset_name(preset):
 		Presets.PRESET_3D_BILLBOARD: return "3D Billboard"
 		_: return "Unknown"
 
+func get_preset_material(preset):
+
+	var material = SpatialMaterial.new()
+	material.flags_transparent = true
+	material.params_depth_draw_mode = SpatialMaterial.DEPTH_DRAW_ALPHA_OPAQUE_PREPASS
+	if preset == Presets.PRESET_3D_BILLBOARD:
+		material.params_billboard_mode = SpatialMaterial.BILLBOARD_ENABLED
+	return material
+
 func get_import_options(preset):
 	var options =  [
 		{
@@ -105,10 +114,10 @@ func get_import_options(preset):
 			default_value = false if preset < Presets.PRESET_3D else true
 		},
 		{
-			name = "billboard",
-			default_value = SpatialMaterial.BILLBOARD_DISABLED if preset < Presets.PRESET_3D_BILLBOARD else SpatialMaterial.BILLBOARD_ENABLED,
-			property_hint = PROPERTY_HINT_ENUM,
-			hint_string = "Disabled,Enabled,Fixed Y,Particles"
+			name = "material_override",
+			default_value = get_preset_material(preset),
+			property_hint = PROPERTY_HINT_RESOURCE_TYPE,
+			hint_string = "Material"
 		},
 		{
 			name = "pixel_size",
