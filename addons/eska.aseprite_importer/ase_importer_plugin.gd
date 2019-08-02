@@ -33,18 +33,18 @@ var SheetToScene = preload('sheet2scene.gd')
 const ERRMSG_POSTCODE_STRF =\
 """ (Code %d)"""
 const ERRMSG_SHEET_PRETEXT_STRF =\
-"""Sprite sheet file "%s" has invalid data:\n"""
+"""Sprite sheet file \"%s\" has invalid data:\n"""
 const ERRMSG_FILE_OPEN_STRF =\
-"""Failed to open %s file "%s" for import"""
+"""Failed to open %s file \"%s\" for import"""
 const ERRMSG_FILE_INVALID_STRF =\
-"""File "%s" is not a valid %s file"""
+"""File \"%s\" is not a valid %s file"""
 const ERRMSG_SAVE_STRF =\
-"""Failed to save file "%s\""""
+"""Failed to save file \"%s\""""
 const ERRMSG_MERGE_PRETEXT_STRF =\
-"""Merging sprite sheet scene "%s" failed\n"""
+"""Merging sprite sheet scene \"%s\" failed\n"""
 const WARNMSG_ANIMATION_EXPORT_STRF=\
-"""File "%s" was exported without animations.
-Enable "Meta: Frame Tags" in Aseprite's "Export Sprite Sheet" dialog to export frame tags as animations"""
+"""File \"%s\" was exported without animations.
+Enable \"Meta: Frame Tags\" in Aseprite's \"Export Sprite Sheet\" dialog to export frame tags as animations"""
 
 
 const PLUGIN_NAME = "eska.aseprite_importer"

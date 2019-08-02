@@ -47,13 +47,13 @@ func get_error_message():
 const ERRMSG_INVALID_JSON =\
 """Sheet JSON is not valid JSON"""
 const ERRMSG_MISSING_KEY_STRF =\
-"""Missing key "%s" in sheet"""
+"""Missing key \"%s\" in sheet"""
 const ERRMSG_MISSING_VALUE_STRF =\
-"""Missing value for key "%s\""""
+"""Missing value for key \"%s\""""
 const ERRMSG_INVALID_KEY_STRF =\
-"""Invalid key: "%s\""""
+"""Invalid key: \"%s\""""
 const ERRMSG_INVALID_VALUE_STRF =\
-"""Invalid value for key "%s\""""
+"""Invalid value for key \"%s\""""
 
 func is_loaded():
 	return _loaded
