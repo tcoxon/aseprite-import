@@ -54,7 +54,7 @@ static func _stretch_animation_track( animation, track, length ):
 		time *= length / animation.get_length()
 		animation.track_insert_key( track, time, value, transition )
 
-func merge( sheet, texture, packed_scene, post_script_path, autoplay_name, aggressive=false ):
+func merge( name, sheet, texture, packed_scene, post_script_path, autoplay_name, aggressive=false ):
 	assert( typeof(sheet) == TYPE_OBJECT and sheet is Sheet )
 	assert( typeof(texture) == TYPE_OBJECT and texture is Texture )
 	assert( typeof(packed_scene) == TYPE_OBJECT and packed_scene is PackedScene )
@@ -65,25 +65,31 @@ func merge( sheet, texture, packed_scene, post_script_path, autoplay_name, aggre
 		scene = Spatial.new()
 	else:
 		scene = Node2D.new()
+	scene.name = name
 	scene.set_meta("_ase_imported", true)
 	
 	var sprite = null
 	if import_options.as_3d:
 		sprite = Sprite3D.new()
+		sprite.pixel_size = import_options.pixel_size
 	else:
 		sprite = Sprite.new()
 	sprite.set_meta("_ase_imported", true)
 	scene.add_child( sprite, true )
 	sprite.set_owner( scene )
 	
+	var frame_rect = sheet.get_frame( 0 ).rect
 	sprite.set_texture( texture )
-	sprite.set_region_rect( sheet.get_frame( 0 ).rect )
+	sprite.set_region_rect( frame_rect )
 	sprite.set_region( true )
 	
-	if import_options.billboard:
+	sprite.set_centered(false)
+	sprite.set_offset(Vector2(- import_options.origin_x * frame_rect.size.x, - import_options.origin_y * frame_rect.size.y))
+	
+	if import_options.as_3d:
 		var material = SpatialMaterial.new()
 		material.flags_transparent = true
-		material.params_billboard_mode = SpatialMaterial.BILLBOARD_ENABLED
+		material.params_billboard_mode = import_options.billboard
 		(sprite as Sprite3D).material_override = material
 	
 	var error
