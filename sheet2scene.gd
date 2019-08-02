@@ -32,6 +32,12 @@ const ERRMSG_INCOMPATIBLE_STRF = \
 
 var _error_message = "No error message available"
 
+var import_options = {}
+
+func _init(import_options):
+	if import_options:
+		self.import_options = import_options
+
 func get_error_message():
 	return _error_message
 
@@ -55,40 +61,36 @@ func merge( sheet, texture, packed_scene, post_script_path, autoplay_name, aggre
 	assert( typeof(post_script_path) == TYPE_STRING)
 	
 	var scene = null
-	var sprite = null
-	var player = null
-	
-	if packed_scene.can_instance():
-		scene = packed_scene.instance()
-		for child in scene.get_children():
-			# Find and bind the correct sprite and animationplayer in the packed scene
-			if child.has_meta("_ase_imported"):
-				if !sprite and child is Sprite:
-					sprite = child
-				if !player and child is AnimationPlayer:
-					player = child
-			if player and sprite:
-				break
+	if import_options.as_3d:
+		scene = Spatial.new()
 	else:
 		scene = Node2D.new()
-		scene.set_meta("_ase_imported", true)
+	scene.set_meta("_ase_imported", true)
 	
-	if !sprite:
+	var sprite = null
+	if import_options.as_3d:
+		sprite = Sprite3D.new()
+	else:
 		sprite = Sprite.new()
-		sprite.set_meta("_ase_imported", true)
-		scene.add_child( sprite, true )
+	sprite.set_meta("_ase_imported", true)
+	scene.add_child( sprite, true )
 	sprite.set_owner( scene )
 	
 	sprite.set_texture( texture )
 	sprite.set_region_rect( sheet.get_frame( 0 ).rect )
 	sprite.set_region( true )
 	
+	if import_options.billboard:
+		var material = SpatialMaterial.new()
+		material.flags_transparent = true
+		material.params_billboard_mode = SpatialMaterial.BILLBOARD_ENABLED
+		(sprite as Sprite3D).material_override = material
+	
 	var error
 	if sheet.is_animations_enabled():
-		if !player:
-			player = AnimationPlayer.new()
-			player.set_meta("_ase_imported", true)
-			scene.add_child(player, true)
+		var player = AnimationPlayer.new()
+		player.set_meta("_ase_imported", true)
+		scene.add_child(player, true)
 		player.set_owner(scene)
 		
 		var track_path_sprite = player.get_node( player.get_root() ).get_path_to( sprite )
