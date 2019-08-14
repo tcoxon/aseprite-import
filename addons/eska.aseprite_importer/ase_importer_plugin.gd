@@ -105,6 +105,10 @@ func get_import_options(preset):
 			#tooltip = "Absolute path to a post script .gd file. The .gd file will have its post_import(scene) method called and is expected to return the changed scene.",
 		},
 		{
+			name = "root_node_name",
+			default_value = ""
+		},
+		{
 			name = "autoplay_animation",
 			default_value = "",
 			#tooltip = "The name of the animation to autoplay on scene load.",
@@ -180,7 +184,9 @@ func import(src, target_path, import_options, r_platform_variants, r_gen_files):
 		print( ERRMSG_FILE_INVALID_STRF % [texture_path, "texture"] )
 		return ERR_INVALID_DATA
 	
-	var name = json_path.get_file().get_basename()
+	var name = import_options.root_node_name
+	if name == "":
+		name = json_path.get_file().get_basename()
 	
 	var packed_scene = PackedScene.new()
 	var sheet2scene = SheetToScene.new(import_options)
