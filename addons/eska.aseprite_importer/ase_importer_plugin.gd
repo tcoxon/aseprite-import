@@ -79,13 +79,13 @@ func get_preset_name(preset):
 		Presets.PRESET_3D_BILLBOARD: return "3D Billboard"
 		_: return "Unknown"
 
-func get_preset_material(preset):
-
+func create_material(import_options):
 	var material = SpatialMaterial.new()
 	material.flags_transparent = true
 	material.params_depth_draw_mode = SpatialMaterial.DEPTH_DRAW_ALPHA_OPAQUE_PREPASS
-	if preset == Presets.PRESET_3D_BILLBOARD:
+	if import_options.billboard:
 		material.params_billboard_mode = SpatialMaterial.BILLBOARD_ENABLED
+		material.flags_do_not_receive_shadows = true # shadows appear broken in 3.1?
 	return material
 
 func get_import_options(preset):
@@ -118,10 +118,10 @@ func get_import_options(preset):
 			default_value = false if preset < Presets.PRESET_3D else true
 		},
 		{
-			name = "material_override",
-			default_value = get_preset_material(preset),
-			property_hint = PROPERTY_HINT_RESOURCE_TYPE,
-			hint_string = "Material"
+			name = "billboard",
+			default_value = SpatialMaterial.BILLBOARD_DISABLED if preset < Presets.PRESET_3D_BILLBOARD else SpatialMaterial.BILLBOARD_ENABLED,
+			property_hint = PROPERTY_HINT_ENUM,
+			hint_string = "Disabled,Enabled,Fixed Y,Particles"
 		},
 		{
 			name = "pixel_size",
@@ -190,7 +190,8 @@ func import(src, target_path, import_options, r_platform_variants, r_gen_files):
 	
 	var packed_scene = PackedScene.new()
 	var sheet2scene = SheetToScene.new(import_options)
-	error = sheet2scene.merge( name, sheet, texture, packed_scene, post_script_path, autoplay_name )
+	var material = create_material(import_options)
+	error = sheet2scene.merge( name, sheet, texture, material, packed_scene, post_script_path, autoplay_name )
 	if error != OK:
 		print( str( ERRMSG_MERGE_PRETEXT_STRF % target_path, sheet2scene.get_error_message(), ERRMSG_POSTCODE_STRF % error ))
 		return error
