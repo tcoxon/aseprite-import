@@ -87,6 +87,7 @@ func create_material(import_options):
 		material.params_billboard_mode = SpatialMaterial.BILLBOARD_ENABLED
 		material.flags_do_not_receive_shadows = true # shadows appear broken in 3.1?
 		material.params_billboard_keep_scale = true
+		material.params_cull_mode = SpatialMaterial.CULL_DISABLED
 	return material
 
 func get_import_options(preset):
