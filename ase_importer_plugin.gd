@@ -82,6 +82,7 @@ func get_preset_name(preset):
 func create_material(import_options):
 	var material = SpatialMaterial.new()
 	material.flags_transparent = true
+	material.flags_unshaded = import_options.unshaded
 	material.params_depth_draw_mode = SpatialMaterial.DEPTH_DRAW_ALPHA_OPAQUE_PREPASS
 	if import_options.billboard:
 		material.params_billboard_mode = SpatialMaterial.BILLBOARD_ENABLED
@@ -140,6 +141,14 @@ func get_import_options(preset):
 			default_value = 0.5 if preset != Presets.PRESET_3D_BILLBOARD else 0.0,
 			property_hint = PROPERTY_HINT_RANGE,
 			hint_string = "0.0,1.0"
+		},
+		{
+			name = "cast_shadow",
+			default_value = true
+		},
+		{
+			name = "unshaded",
+			default_value = false
 		}
 	]
 	

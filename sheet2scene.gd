@@ -73,6 +73,7 @@ func merge( name, sheet, texture, material, packed_scene, post_script_path, auto
 	if import_options.as_3d:
 		sprite = Sprite3D.new()
 		sprite.pixel_size = import_options.pixel_size
+		sprite.cast_shadow = import_options.cast_shadow
 	else:
 		sprite = Sprite.new()
 	sprite.set_meta("_ase_imported", true)
