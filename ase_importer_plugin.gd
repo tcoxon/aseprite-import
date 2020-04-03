@@ -83,7 +83,8 @@ func create_material(import_options):
 	var material = SpatialMaterial.new()
 	material.flags_transparent = true
 	material.flags_unshaded = import_options.unshaded
-	material.params_depth_draw_mode = SpatialMaterial.DEPTH_DRAW_ALPHA_OPAQUE_PREPASS
+	material.params_depth_draw_mode = SpatialMaterial.DEPTH_DRAW_ALPHA_OPAQUE_PREPASS if import_options.alpha_prepass else SpatialMaterial.DEPTH_DRAW_OPAQUE_ONLY
+	material.params_use_alpha_scissor = true
 	material.flags_albedo_tex_force_srgb = true
 	if import_options.billboard:
 		material.params_billboard_mode = SpatialMaterial.BILLBOARD_ENABLED
@@ -149,6 +150,10 @@ func get_import_options(preset):
 		},
 		{
 			name = "unshaded",
+			default_value = false
+		},
+		{
+			name = "alpha_prepass",
 			default_value = false
 		}
 	]
