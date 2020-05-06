@@ -57,7 +57,7 @@ static func _stretch_animation_track( animation, track, length ):
 func merge( name, sheet, texture, material, packed_scene, post_script_path, autoplay_name, aggressive=false ):
 	assert( typeof(sheet) == TYPE_OBJECT and sheet is Sheet )
 	assert( typeof(texture) == TYPE_OBJECT and texture is Texture )
-	assert( material == null or material is SpatialMaterial )
+	assert( material == null or material is Material )
 	assert( typeof(packed_scene) == TYPE_OBJECT and packed_scene is PackedScene )
 	assert( typeof(post_script_path) == TYPE_STRING)
 	
@@ -88,8 +88,10 @@ func merge( name, sheet, texture, material, packed_scene, post_script_path, auto
 	sprite.set_centered(false)
 	sprite.set_offset(Vector2(- import_options.origin_x * frame_rect.size.x, - import_options.origin_y * frame_rect.size.y))
 	
-	if import_options.as_3d:
+	if import_options.as_3d && (material is SpatialMaterial || material is ShaderMaterial):
 		(sprite as Sprite3D).material_override = material
+	elif !import_options.as_3d && (material is CanvasItemMaterial || material is ShaderMaterial):
+		(sprite as Sprite).material = material
 	
 	var error
 	if sheet.is_animations_enabled():

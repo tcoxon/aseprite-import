@@ -80,6 +80,8 @@ func get_preset_name(preset):
 		_: return "Unknown"
 
 func create_material(import_options):
+	if import_options.custom_material != "":
+		return load(import_options.custom_material)
 	var material = SpatialMaterial.new()
 	material.flags_transparent = true
 	material.flags_unshaded = import_options.unshaded
@@ -121,6 +123,12 @@ func get_import_options(preset):
 		{
 			name = "as_3d",
 			default_value = false if preset < Presets.PRESET_3D else true
+		},
+		{
+			name = "custom_material",
+			default_value = "",
+			property_hint = PROPERTY_HINT_FILE,
+			hint_string = "*.tres"
 		},
 		{
 			name = "billboard",
