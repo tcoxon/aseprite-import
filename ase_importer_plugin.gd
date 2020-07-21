@@ -49,7 +49,7 @@ Enable \"Meta: Frame Tags\" in Aseprite's \"Export Sprite Sheet\" dialog to expo
 
 const PLUGIN_NAME = "eska.aseprite_importer"
 
-enum Presets { PRESET_2D, PRESET_3D, PRESET_3D_BILLBOARD }
+enum Presets { PRESET_2D, PRESET_2D_ORIGIN_0, PRESET_3D, PRESET_3D_BILLBOARD }
 
 func get_importer_name():
 	return PLUGIN_NAME
@@ -75,6 +75,7 @@ func get_preset_count():
 func get_preset_name(preset):
 	match preset:
 		Presets.PRESET_2D: return "2D"
+		Presets.PRESET_2D_ORIGIN_0: return "2D Origin=0"
 		Presets.PRESET_3D: return "3D"
 		Presets.PRESET_3D_BILLBOARD: return "3D Billboard"
 		_: return "Unknown"
@@ -142,13 +143,13 @@ func get_import_options(preset):
 		},
 		{
 			name = "origin_x",
-			default_value = 0.5,
+			default_value = 0.5 if preset != Presets.PRESET_2D_ORIGIN_0 else 0.0,
 			property_hint = PROPERTY_HINT_RANGE,
 			hint_string = "0.0,1.0"
 		},
 		{
 			name = "origin_y",
-			default_value = 0.5 if preset != Presets.PRESET_3D_BILLBOARD else 0.0,
+			default_value = 0.5 if preset != Presets.PRESET_3D_BILLBOARD && preset != Presets.PRESET_2D_ORIGIN_0 else 0.0,
 			property_hint = PROPERTY_HINT_RANGE,
 			hint_string = "0.0,1.0"
 		},
