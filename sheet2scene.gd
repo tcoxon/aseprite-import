@@ -90,6 +90,11 @@ func merge( name, sheet, texture, material, packed_scene, post_script_path, auto
 	
 	if import_options.as_3d && (material is SpatialMaterial || material is ShaderMaterial):
 		(sprite as Sprite3D).material_override = material
+		if material is ShaderMaterial:
+			material.set_shader_param("texture_albedo", texture)
+		else:
+			assert(material is SpatialMaterial)
+			material.albedo_texture = texture
 	elif !import_options.as_3d && (material is CanvasItemMaterial || material is ShaderMaterial):
 		(sprite as Sprite).material = material
 	

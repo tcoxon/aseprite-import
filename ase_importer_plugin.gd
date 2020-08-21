@@ -82,13 +82,12 @@ func get_preset_name(preset):
 
 func create_material(import_options):
 	if import_options.custom_material != "":
-		return load(import_options.custom_material)
+		return load(import_options.custom_material).duplicate()
 	var material = SpatialMaterial.new()
 	material.flags_transparent = true
 	material.flags_unshaded = import_options.unshaded
 	material.params_depth_draw_mode = SpatialMaterial.DEPTH_DRAW_ALPHA_OPAQUE_PREPASS
 	material.params_use_alpha_scissor = import_options.use_alpha_scissor
-	material.flags_albedo_tex_force_srgb = true
 	if import_options.billboard:
 		material.params_billboard_mode = SpatialMaterial.BILLBOARD_ENABLED
 		material.flags_do_not_receive_shadows = true # shadows appear broken in 3.1?
