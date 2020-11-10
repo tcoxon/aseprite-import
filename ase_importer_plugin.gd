@@ -86,6 +86,7 @@ func create_material(import_options):
 	var material = SpatialMaterial.new()
 	material.flags_transparent = true
 	material.flags_unshaded = import_options.unshaded
+	material.params_cull_mode = import_options.cull_mode
 	if import_options.use_alpha_scissor:
 		material.params_use_alpha_scissor = true
 		material.params_depth_draw_mode = SpatialMaterial.DEPTH_DRAW_OPAQUE_ONLY
@@ -167,6 +168,12 @@ func get_import_options(preset):
 		{
 			name = "use_alpha_scissor",
 			default_value = true
+		},
+		{
+			name = "cull_mode",
+			default_value = 0,
+			property_hint = PROPERTY_HINT_ENUM,
+			hint_string = "Cull Back,Cull Front,Cull Disabled"
 		}
 	]
 	
