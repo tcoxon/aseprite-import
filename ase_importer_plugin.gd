@@ -87,12 +87,11 @@ func create_material(import_options):
 	material.flags_transparent = true
 	material.flags_unshaded = import_options.unshaded
 	material.params_cull_mode = import_options.cull_mode
+	material.params_depth_draw_mode = SpatialMaterial.DEPTH_DRAW_ALPHA_OPAQUE_PREPASS
 	if import_options.use_alpha_scissor:
 		material.params_use_alpha_scissor = true
-		material.params_depth_draw_mode = SpatialMaterial.DEPTH_DRAW_OPAQUE_ONLY
 	else:
 		material.params_use_alpha_scissor = false
-		material.params_depth_draw_mode = SpatialMaterial.DEPTH_DRAW_ALPHA_OPAQUE_PREPASS
 	if import_options.billboard:
 		material.params_billboard_mode = SpatialMaterial.BILLBOARD_ENABLED
 		material.flags_do_not_receive_shadows = true # shadows appear broken in 3.1?
