@@ -54,6 +54,10 @@ enum Presets { PRESET_2D, PRESET_2D_ORIGIN_0, PRESET_3D, PRESET_3D_BILLBOARD }
 func get_importer_name():
 	return PLUGIN_NAME
 
+func get_import_order() -> int:
+	# Import after the textures we're dependent on:
+	return 1
+
 func get_visible_name():
 	return "Aseprite Spritesheet"
 
