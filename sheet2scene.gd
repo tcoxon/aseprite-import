@@ -86,7 +86,7 @@ func merge( name, sheet, texture, material, packed_scene, post_script_path, auto
 	sprite.set_region( true )
 	
 	sprite.set_centered(false)
-	sprite.set_offset(Vector2(- import_options.origin_x * frame_rect.size.x, - import_options.origin_y * frame_rect.size.y))
+	sprite.set_offset(Vector2(- import_options.origin_x * frame_rect.size.x, - import_options.origin_y * frame_rect.size.y) + import_options.offset)
 	
 	if import_options.as_3d && (material is SpatialMaterial || material is ShaderMaterial):
 		(sprite as Sprite3D).material_override = material

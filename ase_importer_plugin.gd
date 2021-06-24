@@ -161,6 +161,10 @@ func get_import_options(preset):
 			hint_string = "0.0,1.0"
 		},
 		{
+			name = "offset",
+			default_value = Vector2()
+		},
+		{
 			name = "cast_shadow",
 			default_value = true
 		},
